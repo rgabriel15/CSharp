@@ -4,9 +4,9 @@ using System.Data;
 
 namespace RgSystems.Tools
 {
-    public static class ExcelSerializer
+    internal static class ExcelSerializer
     {
-        public static IEnumerable<T> SerializeExcelWorksheet<T>(HttpPostedFileBase file)
+        internal static IEnumerable<T> SerializeExcelWorksheet<T>(HttpPostedFileBase file)
         {
             const string ExcelLegacyFileExtension = "xls";
             const string ExcelFileExtension = "xlsx";
