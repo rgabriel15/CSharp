@@ -47,8 +47,6 @@ namespace RgSystems.Tools
                     return DbType.UInt32;
                 case "UInt64":
                     return DbType.UInt64;
-                case "Xml":
-                    return DbType.Xml;
                 default:
                     throw new ArgumentException("type");
             }
