@@ -9,8 +9,8 @@ namespace RgSystems.Tools
     internal class ExcelSerializer
     {
         #region Properties
-        public string DateTimeFormat { get; set; } = null;
-        public string TimeSpanFormat { get; set; } = null;
+        internal string DateTimeFormat { get; set; } = null;
+        internal string TimeSpanFormat { get; set; } = null;
         #endregion
 
         #region Functions
@@ -93,7 +93,7 @@ namespace RgSystems.Tools
                                     value = TimeSpan.ParseExact(valueString, TimeSpanFormat, System.Globalization.CultureInfo.InvariantCulture);
                             }
                             else
-                                value = converter.ConvertFrom(dr[dc.ColumnName].ToString());
+                                value = converter.ConvertFrom(valueString);
                         }
 
                         propertyInfo.SetValue(model, value);
