@@ -3,9 +3,9 @@ using System.Data;
 
 namespace RgSystems.Tools
 {
-    public static class DatabaseTypeConverter
+    internal static class DatabaseTypeConverter
     {
-        public static DbType DotNetTypeToDbType(Type type)
+        internal static DbType DotNetTypeToDbType(Type type)
         {
             switch (type.ToString())
             {
@@ -54,12 +54,13 @@ namespace RgSystems.Tools
             }
         }
 
-        public static Type DbTypeToDotNetType(DbType dbType)
+        internal static Type DbTypeToDotNetType(DbType dbType)
         {
             switch (dbType.ToString())
             {
                 case "AnsiString":
                 case "String":
+                case "Xml":
                     return typeof(string);
                 case "Binary":
                     return typeof(byte[]);
