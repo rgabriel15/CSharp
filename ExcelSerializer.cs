@@ -1,18 +1,26 @@
 using ExcelDataReader;
 using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 
 namespace RgSystems.Tools
 {
-    internal static class ExcelSerializer
+    internal class ExcelSerializer
     {
-        internal static IEnumerable<T> SerializeExcelWorksheet<T>(HttpPostedFileBase file)
+        #region Properties
+        public string DateTimeFormat { get; set; } = null;
+        public string TimeSpanFormat { get; set; } = null;
+        #endregion
+
+        #region Functions
+        internal IEnumerable<T> SerializeExcelWorksheet<T>(HttpPostedFileBase file)
         {
             const string ExcelLegacyFileExtension = "xls";
             const string ExcelFileExtension = "xlsx";
 
             IExcelDataReader reader = null;
-            var fileExtension = Path.GetExtension(file.FileName).Remove(0, 1).ToLower();
+            var fileExtension = System.IO.Path.GetExtension(file.FileName).Remove(0, 1).ToLower();
             if (fileExtension == ExcelLegacyFileExtension
                 || fileExtension == ExcelFileExtension)
                 reader = ExcelReaderFactory.CreateReader(file.InputStream);
@@ -53,18 +61,40 @@ namespace RgSystems.Tools
                         }
 
                 //Creating model and populating collection
-                foreach (System.Data.DataRow dr in dt.Rows)
+                foreach (DataRow dr in dt.Rows)
                 {
                     var model = (T)Activator.CreateInstance(typeof(T), null);
                     foreach (var dc in dataColumCollection)
                     {
                         var propertyInfo = model.GetType().GetProperty(dc.ColumnName);
                         var converter = System.ComponentModel.TypeDescriptor.GetConverter(propertyInfo.PropertyType);
-                        var value = converter.ConvertFrom(dr[dc.ColumnName].ToString());
+                        var valueString = dr[dc.ColumnName].ToString();
+                        valueString = string.Empty.Equals(valueString) ? null : valueString;
+                        object value = null;
 
-                        if (propertyInfo.PropertyType == typeof(string)
-                            && string.Empty.Equals((string)value))
+                        if (string.Empty.Equals(valueString))
                             value = null;
+                        else
+                        {
+                            if (propertyInfo.PropertyType == typeof(DateTime)
+                                || propertyInfo.PropertyType == typeof(DateTime?))
+                            {
+                                if (string.IsNullOrWhiteSpace(DateTimeFormat))
+                                    value = DateTime.Parse(valueString);
+                                else
+                                    value = DateTime.ParseExact(valueString, DateTimeFormat, System.Globalization.CultureInfo.InvariantCulture);
+                            }
+                            else if (propertyInfo.PropertyType == typeof(TimeSpan)
+                                || propertyInfo.PropertyType == typeof(TimeSpan?))
+                            {
+                                if (string.IsNullOrWhiteSpace(TimeSpanFormat))
+                                    value = TimeSpan.Parse(valueString);
+                                else
+                                    value = TimeSpan.ParseExact(valueString, TimeSpanFormat, System.Globalization.CultureInfo.InvariantCulture);
+                            }
+                            else
+                                value = converter.ConvertFrom(dr[dc.ColumnName].ToString());
+                        }
 
                         propertyInfo.SetValue(model, value);
                     }
@@ -75,5 +105,6 @@ namespace RgSystems.Tools
 
             return collection;
         }
+        #endregion
     }
 }
