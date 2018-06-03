@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RgSystems.Services
 {
-    internal class Rest
+    internal static class Rest
     {
         #region Constants
         private const string ApplicationJson = "application/json";
