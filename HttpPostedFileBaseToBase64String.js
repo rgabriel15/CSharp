@@ -2,9 +2,9 @@ using ExcelDataReader;
 
 namespace RgSystems.Tools
 {
-    public static class Tools
+    internal static class Tools
     {
-        public static string HttpPostedFileBaseToBase64String(HttpPostedFileBase file)
+        internal static string HttpPostedFileBaseToBase64String(HttpPostedFileBase file)
         {
             using (var reader = new BinaryReader(file.InputStream))
             {
