@@ -36,7 +36,7 @@ namespace RgSystems.Services
             if (query != null)
             {
                 service += '?';
-                string[] queryArray = query.Select(x => $"{x.Key}={x.Value}").ToArray();
+                var queryArray = query.Select(x => $"{x.Key}={x.Value}").ToArray();
                 service += string.Join("&", queryArray);
             }
 
@@ -51,8 +51,8 @@ namespace RgSystems.Services
                 {
                     if (response.IsSuccessStatusCode)
                     {
-                        string json = await response.Content.ReadAsStringAsync();
-						T model = JsonConvert.DeserializeObject<T>(json);
+                        var json = await response.Content.ReadAsStringAsync();
+						var model = JsonConvert.DeserializeObject<T>(json);
                         return model;
                     }
 
@@ -83,8 +83,8 @@ namespace RgSystems.Services
                 {
                     if (response.IsSuccessStatusCode)
                     {
-                        string json = await response.Content.ReadAsStringAsync();
-						T model = JsonConvert.DeserializeObject<T>(json);
+                        var json = await response.Content.ReadAsStringAsync();
+						var model = JsonConvert.DeserializeObject<T>(json);
                         return model;
                     }
 
@@ -122,8 +122,8 @@ namespace RgSystems.Services
                 {
                     if (response.IsSuccessStatusCode)
                     {
-                        string json = await response.Content.ReadAsStringAsync();
-                        T model = JsonConvert.DeserializeObject<T>(json);
+                        var json = await response.Content.ReadAsStringAsync();
+                        var model = JsonConvert.DeserializeObject<T>(json);
                         return model;
                     }
 
