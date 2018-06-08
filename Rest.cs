@@ -51,8 +51,9 @@ namespace RgSystems.Services
                 {
                     if (response.IsSuccessStatusCode)
                     {
-                        var json = await response.Content.ReadAsStringAsync();
-                        return JsonConvert.DeserializeObject<T>(json);
+                        string json = await response.Content.ReadAsStringAsync();
+						T model = JsonConvert.DeserializeObject<T>(json);
+                        return model;
                     }
 
                     throw new HttpRequestException(response.ReasonPhrase); //return default(T);
@@ -82,8 +83,9 @@ namespace RgSystems.Services
                 {
                     if (response.IsSuccessStatusCode)
                     {
-                        var json = await response.Content.ReadAsStringAsync();
-                        return JsonConvert.DeserializeObject<T>(json);
+                        string json = await response.Content.ReadAsStringAsync();
+						T model = JsonConvert.DeserializeObject<T>(json);
+                        return model;
                     }
 
                     throw new HttpRequestException(response.ReasonPhrase); //return default(T);
@@ -120,8 +122,9 @@ namespace RgSystems.Services
                 {
                     if (response.IsSuccessStatusCode)
                     {
-                        var json = await response.Content.ReadAsStringAsync();
-                        return JsonConvert.DeserializeObject<T>(json);
+                        string json = await response.Content.ReadAsStringAsync();
+                        T model = JsonConvert.DeserializeObject<T>(json);
+                        return model;
                     }
 
                     throw new HttpRequestException(response.ReasonPhrase); //return default(T);
