@@ -37,7 +37,7 @@ namespace RgSystems.Services
             {
                 service += '?';
                 string[] queryArray = query.Select(x => $"{x.Key}={x.Value}").ToArray();
-                service += String.Join("&", queryArray);
+                service += string.Join("&", queryArray);
             }
 
             using (var httpClient = new HttpClient(new NativeMessageHandler()))
