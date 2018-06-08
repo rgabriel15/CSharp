@@ -70,7 +70,7 @@ namespace RgSystems.Tools
 					}
 				}
 
-                //Creating model and populating collection
+                //Creating models and populating collection
                 foreach (DataRow dr in dt.Rows)
                 {
                     var model = (T)Activator.CreateInstance(typeof(T), null);
