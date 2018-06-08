@@ -16,15 +16,15 @@ namespace RgSystems.Services
         #endregion
 
         #region Functions
-        private static bool CheckUri(string uri)
+        private static bool CheckUri(String uri)
         {
             return Uri.TryCreate(uri, UriKind.Absolute, out Uri uriResponse)
                 && (uriResponse.Scheme == Uri.UriSchemeHttp || uriResponse.Scheme == Uri.UriSchemeHttps);
         }
 
-        internal static async Task<T> GetAsync<T>(string host
-            , string service
-            , System.Collections.Generic.Dictionary<string, string> query = null
+        internal static async Task<T> GetAsync<T>(String host
+            , String service
+            , System.Collections.Generic.Dictionary<String, String> query = null
             , AuthenticationHeaderValue authenticationHeader = null
             , ushort timeoutSec = TimeoutSeconds)
         {
@@ -61,8 +61,8 @@ namespace RgSystems.Services
             }
         }
 
-        internal static async Task<T> PostAsync<T>(string host
-            , string service
+        internal static async Task<T> PostAsync<T>(String host
+            , String service
             , FormUrlEncodedContent formUrlEncodedContent = null
             , AuthenticationHeaderValue authenticationHeader = null
             , ushort timeoutSec = TimeoutSeconds)
@@ -93,8 +93,8 @@ namespace RgSystems.Services
             }
         }
 
-        internal static async Task<T> PostAsync<T>(string host
-            , string service
+        internal static async Task<T> PostAsync<T>(String host
+            , String service
             , object model = null
             , AuthenticationHeaderValue authenticationHeader = null
             , ushort timeoutSec = TimeoutSeconds)
@@ -111,14 +111,14 @@ namespace RgSystems.Services
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(ApplicationJson));
                 httpClient.DefaultRequestHeaders.Authorization = authenticationHeader;
 
-                StringContent stringContent = null;
+                StringContent StringContent = null;
 
                 if (model != null)
-                    stringContent = new StringContent(JsonConvert.SerializeObject(model)
+                    StringContent = new StringContent(JsonConvert.SerializeObject(model)
                         , System.Text.Encoding.UTF8
                         , ApplicationJson);
 
-                using (var response = await httpClient.PostAsync(service, stringContent))
+                using (var response = await httpClient.PostAsync(service, StringContent))
                 {
                     if (response.IsSuccessStatusCode)
                     {
