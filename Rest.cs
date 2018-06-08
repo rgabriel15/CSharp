@@ -24,7 +24,7 @@ namespace RgSystems.Services
 
         internal static async Task<T> GetAsync<T>(string host
             , string service
-            , System.Collections.Generic.Dictionary<String, String> query = null
+            , System.Collections.Generic.Dictionary<string, string> query = null
             , AuthenticationHeaderValue authenticationHeader = null
             , ushort timeoutSec = TimeoutSeconds)
         {
@@ -111,14 +111,14 @@ namespace RgSystems.Services
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(ApplicationJson));
                 httpClient.DefaultRequestHeaders.Authorization = authenticationHeader;
 
-                StringContent StringContent = null;
+                StringContent stringContent = null;
 
                 if (model != null)
-                    StringContent = new StringContent(JsonConvert.SerializeObject(model)
+                    stringContent = new StringContent(JsonConvert.SerializeObject(model)
                         , System.Text.Encoding.UTF8
                         , ApplicationJson);
 
-                using (var response = await httpClient.PostAsync(service, StringContent))
+                using (var response = await httpClient.PostAsync(service, stringContent))
                 {
                     if (response.IsSuccessStatusCode)
                     {
