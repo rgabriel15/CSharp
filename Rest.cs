@@ -16,14 +16,14 @@ namespace RgSystems.Services
         #endregion
 
         #region Functions
-        private static bool CheckUri(String uri)
+        private static bool CheckUri(string uri)
         {
             return Uri.TryCreate(uri, UriKind.Absolute, out Uri uriResponse)
                 && (uriResponse.Scheme == Uri.UriSchemeHttp || uriResponse.Scheme == Uri.UriSchemeHttps);
         }
 
-        internal static async Task<T> GetAsync<T>(String host
-            , String service
+        internal static async Task<T> GetAsync<T>(string host
+            , string service
             , System.Collections.Generic.Dictionary<String, String> query = null
             , AuthenticationHeaderValue authenticationHeader = null
             , ushort timeoutSec = TimeoutSeconds)
@@ -36,7 +36,7 @@ namespace RgSystems.Services
             if (query != null)
             {
                 service += '?';
-                var queryArray = query.Select(x => $"{x.Key}={x.Value}").ToArray();
+                string[] queryArray = query.Select(x => $"{x.Key}={x.Value}").ToArray();
                 service += String.Join("&", queryArray);
             }
 
@@ -61,8 +61,8 @@ namespace RgSystems.Services
             }
         }
 
-        internal static async Task<T> PostAsync<T>(String host
-            , String service
+        internal static async Task<T> PostAsync<T>(string host
+            , string service
             , FormUrlEncodedContent formUrlEncodedContent = null
             , AuthenticationHeaderValue authenticationHeader = null
             , ushort timeoutSec = TimeoutSeconds)
@@ -93,8 +93,8 @@ namespace RgSystems.Services
             }
         }
 
-        internal static async Task<T> PostAsync<T>(String host
-            , String service
+        internal static async Task<T> PostAsync<T>(string host
+            , string service
             , object model = null
             , AuthenticationHeaderValue authenticationHeader = null
             , ushort timeoutSec = TimeoutSeconds)
