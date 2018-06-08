@@ -18,8 +18,9 @@ namespace RgSystems.Services
         #region Functions
         private static bool CheckUri(string uri)
         {
-            return Uri.TryCreate(uri, UriKind.Absolute, out Uri uriResponse)
+			var ret = Uri.TryCreate(uri, UriKind.Absolute, out Uri uriResponse)
                 && (uriResponse.Scheme == Uri.UriSchemeHttp || uriResponse.Scheme == Uri.UriSchemeHttps);
+            return ret;
         }
 
         internal static async Task<T> GetAsync<T>(string host
@@ -29,15 +30,19 @@ namespace RgSystems.Services
             , ushort timeoutSec = TimeoutSeconds)
         {
             if (!CheckUri(host))
+			{
                 throw new ArgumentException("host");
+			}
+			
             if (string.IsNullOrWhiteSpace(service))
+			{
                 throw new ArgumentException("service");
+			}
 
             if (query != null)
             {
-                service += '?';
                 var queryArray = query.Select(x => $"{x.Key}={x.Value}").ToArray();
-                service += string.Join("&", queryArray);
+                service += '?' + string.Join("&", queryArray);
             }
 
             using (var httpClient = new HttpClient(new NativeMessageHandler()))
@@ -68,9 +73,14 @@ namespace RgSystems.Services
             , ushort timeoutSec = TimeoutSeconds)
         {
             if (!CheckUri(host))
+			{
                 throw new ArgumentException("host");
+			}
+			
             if (string.IsNullOrWhiteSpace(service))
+			{
                 throw new ArgumentException("service");
+			}
 
             using (var httpClient = new HttpClient(new NativeMessageHandler()))
             {
@@ -100,9 +110,14 @@ namespace RgSystems.Services
             , ushort timeoutSec = TimeoutSeconds)
         {
             if (!CheckUri(host))
+			{
                 throw new ArgumentException("host");
+			}
+			
             if (string.IsNullOrWhiteSpace(service))
+			{
                 throw new ArgumentException("service");
+			}
 
             using (var httpClient = new HttpClient(new NativeMessageHandler()))
             {
@@ -114,9 +129,11 @@ namespace RgSystems.Services
                 StringContent stringContent = null;
 
                 if (model != null)
+				{
                     stringContent = new StringContent(JsonConvert.SerializeObject(model)
                         , System.Text.Encoding.UTF8
                         , ApplicationJson);
+				}
 
                 using (var response = await httpClient.PostAsync(service, stringContent))
                 {
