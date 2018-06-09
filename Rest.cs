@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
-namespace RgSystems.Services
+namespace BuySellXF.Services
 {
     internal static class Rest
     {
@@ -18,7 +18,7 @@ namespace RgSystems.Services
         #region Functions
         private static bool CheckUri(string uri)
         {
-			var ret = Uri.TryCreate(uri, UriKind.Absolute, out Uri uriResponse)
+            var ret = Uri.TryCreate(uri, UriKind.Absolute, out Uri uriResponse)
                 && (uriResponse.Scheme == Uri.UriSchemeHttp || uriResponse.Scheme == Uri.UriSchemeHttps);
             return ret;
         }
@@ -30,14 +30,14 @@ namespace RgSystems.Services
             , ushort timeoutSec = TimeoutSeconds)
         {
             if (!CheckUri(host))
-			{
+            {
                 throw new ArgumentException("host");
-			}
-			
+            }
+
             if (string.IsNullOrWhiteSpace(service))
-			{
+            {
                 throw new ArgumentException("service");
-			}
+            }
 
             if (query != null)
             {
@@ -57,7 +57,7 @@ namespace RgSystems.Services
                     if (response.IsSuccessStatusCode)
                     {
                         var json = await response.Content.ReadAsStringAsync();
-						var model = JsonConvert.DeserializeObject<T>(json);
+                        var model = JsonConvert.DeserializeObject<T>(json);
                         return model;
                     }
 
@@ -73,14 +73,14 @@ namespace RgSystems.Services
             , ushort timeoutSec = TimeoutSeconds)
         {
             if (!CheckUri(host))
-			{
+            {
                 throw new ArgumentException("host");
-			}
-			
+            }
+
             if (string.IsNullOrWhiteSpace(service))
-			{
+            {
                 throw new ArgumentException("service");
-			}
+            }
 
             using (var httpClient = new HttpClient(new NativeMessageHandler()))
             {
@@ -94,8 +94,8 @@ namespace RgSystems.Services
                     if (response.IsSuccessStatusCode)
                     {
                         var json = await response.Content.ReadAsStringAsync();
-						var model = JsonConvert.DeserializeObject<T>(json);
-                        return model;
+                        var responseModel = JsonConvert.DeserializeObject<T>(json);
+                        return responseModel;
                     }
 
                     throw new HttpRequestException(response.ReasonPhrase); //return default(T);
@@ -110,14 +110,14 @@ namespace RgSystems.Services
             , ushort timeoutSec = TimeoutSeconds)
         {
             if (!CheckUri(host))
-			{
+            {
                 throw new ArgumentException("host");
-			}
-			
+            }
+
             if (string.IsNullOrWhiteSpace(service))
-			{
+            {
                 throw new ArgumentException("service");
-			}
+            }
 
             using (var httpClient = new HttpClient(new NativeMessageHandler()))
             {
@@ -129,19 +129,19 @@ namespace RgSystems.Services
                 StringContent stringContent = null;
 
                 if (model != null)
-				{
+                {
                     stringContent = new StringContent(JsonConvert.SerializeObject(model)
                         , System.Text.Encoding.UTF8
                         , ApplicationJson);
-				}
+                }
 
                 using (var response = await httpClient.PostAsync(service, stringContent))
                 {
                     if (response.IsSuccessStatusCode)
                     {
                         var json = await response.Content.ReadAsStringAsync();
-                        var model = JsonConvert.DeserializeObject<T>(json);
-                        return model;
+                        var responseModel = JsonConvert.DeserializeObject<T>(json);
+                        return responseModel;
                     }
 
                     throw new HttpRequestException(response.ReasonPhrase); //return default(T);
