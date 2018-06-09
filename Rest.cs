@@ -57,8 +57,8 @@ namespace BuySellXF.Services
                     if (response.IsSuccessStatusCode)
                     {
                         var json = await response.Content.ReadAsStringAsync();
-                        var model = JsonConvert.DeserializeObject<T>(json);
-                        return model;
+                        var responseModel = JsonConvert.DeserializeObject<T>(json);
+                        return responseModel;
                     }
 
                     throw new HttpRequestException(response.ReasonPhrase); //return default(T);
