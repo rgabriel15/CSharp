@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
-namespace BuySellXF.Services
+namespace RgSystems.Services
 {
     internal static class Rest
     {
