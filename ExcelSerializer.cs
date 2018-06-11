@@ -16,7 +16,7 @@ namespace RgSystems.Tools
         #region Functions
         internal IEnumerable<T> SerializeExcelWorksheet<T>(HttpPostedFileBase file)
         {
-            const string ExcelLegacyFileExtension = "xls";
+            const string ExcelLegacyFileExtension = "xls";  
             const string ExcelFileExtension = "xlsx";
 
             IExcelDataReader reader = null;
