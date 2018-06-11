@@ -60,7 +60,7 @@ namespace RgSystems.Tools
 				else
 					DateTimeParseFunc = (value) => return DateTime.ParseExact(value, DateTimeFormat, System.Globalization.CultureInfo.InvariantCulture);
 				
-				Func<string, DateTime> TimeSpanParseFunc = null;
+				Func<string, TimeSpan> TimeSpanParseFunc = null;
 				if (string.IsNullOrWhiteSpace(TimeSpanFormat))
 					TimeSpanParseFunc = (value) => return TimeSpan.Parse(value);
 				else
