@@ -48,15 +48,24 @@ namespace RgSystems.Tools
                 dt.Columns.CopyTo(dtColumnArray, 0);
                 var dataColumnCollection = dtColumnArray.ToList();
                 dtColumnArray = null;
-
                 var propertyCollection = ((T)Activator.CreateInstance(typeof(T), null)).GetType().GetProperties().ToList();
                 dataColumnCollection.RemoveAll(dc => !propertyCollection.Any(prop => prop.Name.ToLower() == dc.ColumnName.Trim().ToLower()));
 
                 if (dataColumnCollection.Count < 1)
-				{
-                    return collection;
-				}
+					return collection;
 
+				Func<string, DateTime> DateTimeParseFunc = null;
+				if (string.IsNullOrWhiteSpace(DateTimeFormat))
+					DateTimeParseFunc = (value) => return DateTime.Parse(value);
+				else
+					DateTimeParseFunc = (value) => return DateTime.ParseExact(value, DateTimeFormat, System.Globalization.CultureInfo.InvariantCulture);
+				
+				Func<string, DateTime> TimeSpanParseFunc = null;
+				if (string.IsNullOrWhiteSpace(TimeSpanFormat))
+					TimeSpanParseFunc = (value) => return TimeSpan.Parse(value);
+				else
+					TimeSpanParseFunc = (value) => return TimeSpan.ParseExact(value, TimeSpanFormat, System.Globalization.CultureInfo.InvariantCulture);
+				
                 foreach (var dc in dataColumnCollection)
 				{
                     for (var i = propertyCollection.Count - 1; i >= 0; i--)
@@ -77,7 +86,7 @@ namespace RgSystems.Tools
                     foreach (var dc in dataColumnCollection)
                     {
                         var propertyInfo = model.GetType().GetProperty(dc.ColumnName);
-                        var converter = System.ComponentModel.TypeDescriptor.GetConverter(propertyInfo.PropertyType);
+                        
                         var valueString = dr[dc.ColumnName].ToString();
                         valueString = string.Empty.Equals(valueString) ? null : valueString;
                         object value = null;
@@ -91,29 +100,16 @@ namespace RgSystems.Tools
                             if (propertyInfo.PropertyType == typeof(DateTime)
                                 || propertyInfo.PropertyType == typeof(DateTime?))
                             {
-                                if (string.IsNullOrWhiteSpace(DateTimeFormat))
-								{
-                                    value = DateTime.Parse(valueString);
-								}
-                                else
-								{
-                                    value = DateTime.ParseExact(valueString, DateTimeFormat, System.Globalization.CultureInfo.InvariantCulture);
-								}
+                                value = DateTimeParseFunc(valueString);
                             }
                             else if (propertyInfo.PropertyType == typeof(TimeSpan)
                                 || propertyInfo.PropertyType == typeof(TimeSpan?))
                             {
-                                if (string.IsNullOrWhiteSpace(TimeSpanFormat))
-								{
-                                    value = TimeSpan.Parse(valueString);
-								}
-                                else
-								{
-                                    value = TimeSpan.ParseExact(valueString, TimeSpanFormat, System.Globalization.CultureInfo.InvariantCulture);
-								}
+                                value = TimeSpanParseFunc(valueString);
                             }
                             else
 							{
+								var converter = System.ComponentModel.TypeDescriptor.GetConverter(propertyInfo.PropertyType);
                                 value = converter.ConvertFrom(valueString);
 							}
                         }
