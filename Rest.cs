@@ -30,14 +30,10 @@ namespace RgSystems.Services
             , ushort timeoutSec = TimeoutSeconds)
         {
             if (!CheckUri(host))
-            {
                 throw new ArgumentException("host");
-            }
 
             if (string.IsNullOrWhiteSpace(service))
-            {
                 throw new ArgumentException("service");
-            }
 
             if (query != null)
             {
@@ -73,14 +69,10 @@ namespace RgSystems.Services
             , ushort timeoutSec = TimeoutSeconds)
         {
             if (!CheckUri(host))
-            {
                 throw new ArgumentException("host");
-            }
 
             if (string.IsNullOrWhiteSpace(service))
-            {
                 throw new ArgumentException("service");
-            }
 
             using (var httpClient = new HttpClient(new NativeMessageHandler()))
             {
@@ -110,14 +102,10 @@ namespace RgSystems.Services
             , ushort timeoutSec = TimeoutSeconds)
         {
             if (!CheckUri(host))
-            {
                 throw new ArgumentException("host");
-            }
 
             if (string.IsNullOrWhiteSpace(service))
-            {
                 throw new ArgumentException("service");
-            }
 
             using (var httpClient = new HttpClient(new NativeMessageHandler()))
             {
