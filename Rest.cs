@@ -18,7 +18,8 @@ namespace RgSystems.Services
         #region Functions
         private static bool CheckUri(string uri)
         {
-            var ret = Uri.TryCreate(uri, UriKind.Absolute, out Uri uriResponse)
+            Uri uriResult = null;
+            var ret = Uri.TryCreate(uri, UriKind.Absolute, out uriResponse)
                 && (uriResponse.Scheme == Uri.UriSchemeHttp || uriResponse.Scheme == Uri.UriSchemeHttps);
             return ret;
         }
