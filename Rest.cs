@@ -26,7 +26,7 @@ namespace RgSystems.Services
 
         internal static async Task<T> GetAsync<T>(string host
             , string service
-            , System.Collections.Generic.Dictionary<string, string> query = null
+            , System.Collections.Generic.Dictionary<string, object> query = null
             , AuthenticationHeaderValue authenticationHeader = null
             , ushort timeoutSec = TimeoutSeconds)
         {
@@ -398,7 +398,7 @@ namespace Agronegocio.Services
         }
 
         public async Task<T> DeleteAsync<T>(string service
-            , Dictionary<string, string> query = null
+            , Dictionary<string, object> query = null
             , Dictionary<String, String> headerCollection = null)
         {
             if (string.IsNullOrWhiteSpace(service))
