@@ -38,7 +38,7 @@ namespace RgSystems.Services
 
             if (query != null)
             {
-                var queryArray = query.Select(x => $"{x.Key}={x.Value}").ToArray();
+                var queryArray = query.Select(x => $"{x.Key}={x.Value.ToString()}").ToArray();
                 service += '?' + string.Join("&", queryArray);
             }
 
@@ -214,7 +214,7 @@ namespace Agronegocio.Services
             if (query != null
                 && query.Count > 0)
             {
-                var queryArray = query.Select(x => $"{x.Key}={x.Value}").ToArray();
+                var queryArray = query.Select(x => $"{x.Key}={x.Value.ToString()}").ToArray();
                 service += '?' + string.Join("&", queryArray);
             }
 
@@ -260,7 +260,7 @@ namespace Agronegocio.Services
             if (query != null
                 && query.Count > 0)
             {
-                var queryArray = query.Select(x => $"{x.Key}={x.Value}").ToArray();
+                var queryArray = query.Select(x => $"{x.Key}={x.Value.ToString()}").ToArray();
                 service += '?' + string.Join("&", queryArray);
             }
 
@@ -409,7 +409,7 @@ namespace Agronegocio.Services
             if (query != null
                 && query.Count > 0)
             {
-                var queryArray = query.Select(x => $"{x.Key}={x.Value}").ToArray();
+                var queryArray = query.Select(x => $"{x.Key}={x.Value.ToString()}").ToArray();
                 service += '?' + string.Join("&", queryArray);
             }
 
