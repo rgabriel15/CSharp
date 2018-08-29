@@ -38,6 +38,7 @@ namespace RgSystems.Services
 
             if (query != null)
             {
+				query = query.Where(x => x.Value != null).ToDictionary(x => x.Key, x => x.Value);
                 var queryArray = query.Select(x => $"{x.Key}={x.Value?.ToString()}").ToArray();
                 service += '?' + string.Join("&", queryArray);
             }
@@ -206,38 +207,6 @@ namespace Agronegocio.Services
                 && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
             return ret;
         }
-            if (string.IsNullOrWhiteSpace(service))
-            {
-                throw new ArgumentException("service");
-            }
-
-            if (query != null
-                && query.Count > 0)
-            {
-                var queryArray = query.Select(x => $"{x.Key}={x.Value?.ToString()}").ToArray();
-                service += '?' + string.Join("&", queryArray);
-            }
-
-            if (headerCollection != null)
-            {
-                foreach (KeyValuePair<String, String> kvp in headerCollection)
-                {
-                    Client.DefaultRequestHeaders.Add(kvp.Key, kvp.Value);
-                }
-            }
-
-            using (var response = await Client.GetAsync(service).ConfigureAwait(false))
-            {
-                if (response.IsSuccessStatusCode)
-                {
-                    var json = await response.Content.ReadAsStringAsync();
-                    var responseModel = JsonConvert.DeserializeObject<T>(json);
-                    return responseModel;
-                }
-
-                throw new HttpRequestException(response.ReasonPhrase); //return default(T);
-            }
-        }
 
         /// <summary>
         /// 
@@ -260,6 +229,7 @@ namespace Agronegocio.Services
             if (query != null
                 && query.Count > 0)
             {
+				query = query.Where(x => x.Value != null).ToDictionary(x => x.Key, x => x.Value);
                 var queryArray = query.Select(x => $"{x.Key}={x.Value?.ToString()}").ToArray();
                 service += '?' + string.Join("&", queryArray);
             }
@@ -409,6 +379,7 @@ namespace Agronegocio.Services
             if (query != null
                 && query.Count > 0)
             {
+				query = query.Where(x => x.Value != null).ToDictionary(x => x.Key, x => x.Value);
                 var queryArray = query.Select(x => $"{x.Key}={x.Value?.ToString()}").ToArray();
                 service += '?' + string.Join("&", queryArray);
             }
