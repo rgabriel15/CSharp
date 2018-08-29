@@ -1,3 +1,20 @@
+Skip to content
+ 
+Search or jump to…
+
+Pull requests
+Issues
+Marketplace
+Explore
+ @rgabriel15 Sign out
+1
+0 0 rgabriel15/CSharp
+ Code  Issues 0  Pull requests 0  Projects 0  Wiki  Insights  Settings
+CSharp/Rest.cs
+a8a984f  7 days ago
+@rgabriel15 rgabriel15 Update Rest.cs
+     
+439 lines (365 sloc)  14.9 KB
 using ModernHttpClient;
 using Newtonsoft.Json;
 using System;
@@ -38,7 +55,7 @@ namespace RgSystems.Services
 
             if (query != null)
             {
-                var queryArray = query.Select(x => $"{x.Key}={x.Value.ToString()}").ToArray();
+                var queryArray = query.Select(x => $"{x.Key}={x.Value?.ToString()}").ToArray();
                 service += '?' + string.Join("&", queryArray);
             }
 
@@ -214,7 +231,7 @@ namespace Agronegocio.Services
             if (query != null
                 && query.Count > 0)
             {
-                var queryArray = query.Select(x => $"{x.Key}={x.Value.ToString()}").ToArray();
+                var queryArray = query.Select(x => $"{x.Key}={x.Value?.ToString()}").ToArray();
                 service += '?' + string.Join("&", queryArray);
             }
 
@@ -260,7 +277,7 @@ namespace Agronegocio.Services
             if (query != null
                 && query.Count > 0)
             {
-                var queryArray = query.Select(x => $"{x.Key}={x.Value.ToString()}").ToArray();
+                var queryArray = query.Select(x => $"{x.Key}={x.Value?.ToString()}").ToArray();
                 service += '?' + string.Join("&", queryArray);
             }
 
@@ -409,7 +426,7 @@ namespace Agronegocio.Services
             if (query != null
                 && query.Count > 0)
             {
-                var queryArray = query.Select(x => $"{x.Key}={x.Value.ToString()}").ToArray();
+                var queryArray = query.Select(x => $"{x.Key}={x.Value?.ToString()}").ToArray();
                 service += '?' + string.Join("&", queryArray);
             }
 
