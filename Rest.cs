@@ -39,7 +39,7 @@ namespace RgSystems.Services
             if (query != null)
             {
 				query = query.Where(x => x.Value != null).ToDictionary(x => x.Key, x => x.Value);
-                var queryArray = query.Select(x => $"{x.Key}={x.Value?.ToString()}").ToArray();
+                var queryArray = query.Select(x => $"{x.Key}={x.Value?.Tostring()}").ToArray();
                 service += '?' + string.Join("&", queryArray);
             }
 
@@ -54,7 +54,7 @@ namespace RgSystems.Services
                 {
                     if (response.IsSuccessStatusCode)
                     {
-                        var json = await response.Content.ReadAsStringAsync();
+                        var json = await response.Content.ReadAsstringAsync();
                         var responseModel = JsonConvert.DeserializeObject<T>(json);
                         return responseModel;
                     }
@@ -87,7 +87,7 @@ namespace RgSystems.Services
                 {
                     if (response.IsSuccessStatusCode)
                     {
-                        var json = await response.Content.ReadAsStringAsync();
+                        var json = await response.Content.ReadAsstringAsync();
                         var responseModel = JsonConvert.DeserializeObject<T>(json);
                         return responseModel;
                     }
@@ -116,11 +116,11 @@ namespace RgSystems.Services
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(ApplicationJson));
                 httpClient.DefaultRequestHeaders.Authorization = authenticationHeader;
 
-                StringContent stringContent = null;
+                stringContent stringContent = null;
 
                 if (model != null)
                 {
-                    stringContent = new StringContent(JsonConvert.SerializeObject(model)
+                    stringContent = new stringContent(JsonConvert.SerializeObject(model)
                         , System.Text.Encoding.UTF8
                         , ApplicationJson);
                 }
@@ -129,7 +129,7 @@ namespace RgSystems.Services
                 {
                     if (response.IsSuccessStatusCode)
                     {
-                        var json = await response.Content.ReadAsStringAsync();
+                        var json = await response.Content.ReadAsstringAsync();
                         var responseModel = JsonConvert.DeserializeObject<T>(json);
                         return responseModel;
                     }
@@ -172,7 +172,7 @@ namespace Agronegocio.Services
     public class Rest
     {
         #region Constannts
-        private const String ApplicationJson = "application/json";
+        private const string ApplicationJson = "application/json";
         #endregion
 
         #region Propriedades
@@ -191,7 +191,7 @@ namespace Agronegocio.Services
             client = new HttpClient
             {
                 BaseAddress = new Uri(baseUrl),
-                Timeout = TimeSpan.FromSeconds(TimeOut)
+                Timeout = TimeSpan.FromSeconds(timeOut)
             };
 
             Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(applicationJson));
@@ -219,34 +219,30 @@ namespace Agronegocio.Services
         public async Task<T> GetAsync<T>(string service
             , Dictionary<string, object> query = null
             , AuthenticationHeaderValue authenticationHeader = null
-            , Dictionary<String, String> headerCollection = null)
+            , Dictionary<string, string> headerCollection = null)
         {
             if (string.IsNullOrWhiteSpace(service))
-            {
-                throw new ArgumentException("service");
-            }
+				throw new ArgumentException("service");
 
             if (query != null
                 && query.Count > 0)
             {
 				query = query.Where(x => x.Value != null).ToDictionary(x => x.Key, x => x.Value);
-                var queryArray = query.Select(x => $"{x.Key}={x.Value?.ToString()}").ToArray();
+                var queryArray = query.Select(x => $"{x.Key.ToLower()}={x.Value.Tostring()}").ToArray();
                 service += '?' + string.Join("&", queryArray);
             }
 
             if (headerCollection != null)
             {
-                foreach (KeyValuePair<String, String> kvp in headerCollection)
-                {
-                    Client.DefaultRequestHeaders.Add(kvp.Key, kvp.Value);
-                }
+                foreach (var kvp in headerCollection)
+					Client.DefaultRequestHeaders.Add(kvp.Key, kvp.Value);
             }
 
             using (var response = await Client.GetAsync(service).ConfigureAwait(false))
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var json = await response.Content.ReadAsStringAsync();
+                    var json = await response.Content.ReadAsstringAsync();
                     var responseModel = JsonConvert.DeserializeObject<T>(json);
                     return responseModel;
                 }
@@ -267,26 +263,22 @@ namespace Agronegocio.Services
         /// <returns></returns>
         public async Task<T> PostAsync<T>(string service
             , FormUrlEncodedContent formUrlEncodedContent = null
-			, Dictionary<String, String> headerCollection = null)
+			, Dictionary<string, string> headerCollection = null)
         {
             if (string.IsNullOrWhiteSpace(service))
-            {
-                throw new ArgumentException("service");
-            }
+				throw new ArgumentException("service");
 			
 			if (headerCollection != null)
             {
-                foreach (KeyValuePair<String, String> kvp in headerCollection)
-                {
-                    Client.DefaultRequestHeaders.Add(kvp.Key, kvp.Value);
-                }
+                foreach (var kvp in headerCollection)
+					Client.DefaultRequestHeaders.Add(kvp.Key, kvp.Value);
             }
 
             using (var response = await Client.PostAsync(service, formUrlEncodedContent))
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var json = await response.Content.ReadAsStringAsync();
+                    var json = await response.Content.ReadAsstringAsync();
                     var responseModel = JsonConvert.DeserializeObject<T>(json);
                     return responseModel;
                 }
@@ -307,25 +299,23 @@ namespace Agronegocio.Services
         /// <returns></returns>
         public async Task<T> PostAsync<T>(string service
             , object model = null
-            , Dictionary<String, String> headerCollection = null)
+            , Dictionary<string, string> headerCollection = null)
         {
             if (string.IsNullOrWhiteSpace(service))
-            {
-                throw new ArgumentException("service");
-            }
+				throw new ArgumentException("service");
 
-            StringContent stringContent = null;
+            stringContent stringContent = null;
 
             if (model != null)
             {
-                stringContent = new StringContent(JsonConvert.SerializeObject(model)
+                stringContent = new stringContent(JsonConvert.SerializeObject(model)
                     , System.Text.Encoding.UTF8
                     , ApplicationJson);
             }
 
             if (headerCollection != null)
             {
-                foreach (KeyValuePair<String, String> kvp in headerCollection)
+                foreach (var kvp in headerCollection)
                 {
                     Client.DefaultRequestHeaders.Add(kvp.Key, kvp.Value);
                 }
@@ -335,30 +325,7 @@ namespace Agronegocio.Services
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var json = await response.Content.ReadAsStringAsync();
-                    var responseModel = JsonConvert.DeserializeObject<T>(json);
-                    return responseModel;
-                }
-
-                throw new HttpRequestException(response.ReasonPhrase); //return default(T);
-            }
-        }
-            StringContent stringContent = null;
-            stringContent = new StringContent(Json, System.Text.Encoding.UTF8, ApplicationJson);
-
-            if (headerCollection != null)
-            {
-                foreach (KeyValuePair<String, String> kvp in headerCollection)
-                {
-                    Client.DefaultRequestHeaders.Add(kvp.Key, kvp.Value);
-                }
-            }
-
-            using (var response = await Client.PostAsync(service, stringContent))
-            {
-                if (response.IsSuccessStatusCode)
-                {
-                    var json = await response.Content.ReadAsStringAsync();
+                    var json = await response.Content.ReadAsstringAsync();
                     var responseModel = JsonConvert.DeserializeObject<T>(json);
                     return responseModel;
                 }
@@ -369,7 +336,7 @@ namespace Agronegocio.Services
 
         public async Task<T> DeleteAsync<T>(string service
             , Dictionary<string, object> query = null
-            , Dictionary<String, String> headerCollection = null)
+            , Dictionary<string, string> headerCollection = null)
         {
             if (string.IsNullOrWhiteSpace(service))
             {
@@ -380,13 +347,13 @@ namespace Agronegocio.Services
                 && query.Count > 0)
             {
 				query = query.Where(x => x.Value != null).ToDictionary(x => x.Key, x => x.Value);
-                var queryArray = query.Select(x => $"{x.Key}={x.Value?.ToString()}").ToArray();
+                var queryArray = query.Select(x => $"{x.Key}={x.Value?.Tostring()}").ToArray();
                 service += '?' + string.Join("&", queryArray);
             }
 
 			if (headerCollection != null)
             {
-                foreach (KeyValuePair<String, String> kvp in headerCollection)
+                foreach (var kvp in headerCollection)
                 {
                     Client.DefaultRequestHeaders.Add(kvp.Key, kvp.Value);
                 }
@@ -396,7 +363,7 @@ namespace Agronegocio.Services
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var json = await response.Content.ReadAsStringAsync();
+                    var json = await response.Content.ReadAsstringAsync();
                     var responseModel = JsonConvert.DeserializeObject<T>(json);
                     return responseModel;
                 }
