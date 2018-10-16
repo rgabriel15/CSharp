@@ -39,7 +39,7 @@ namespace RgSystems.Services
             if (query != null)
             {
 				query = query.Where(x => x.Value != null).ToDictionary(x => x.Key, x => x.Value);
-                var queryArray = query.Select(x => $"{x.Key}={x.Value?.Tostring()}").ToArray();
+                var queryArray = query.Select(x => $"{x.Key}={x.Value.ToString()}").ToArray();
                 service += '?' + string.Join("&", queryArray);
             }
 
